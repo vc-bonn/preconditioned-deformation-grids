@@ -20,7 +20,7 @@ pip install preconditioned_grids/
 ### Usage See examples in example.py:
 main class in `src/value_wrapper.py` is `ValueWrapper`, which can be initialized with a dictionary of arguments.
 ```python
-from src.value_wrapper import ValueWrapper
+from pcgrid.value_wrapper import ValueWrapper
 args = {
     "device": "cuda:0",  # define the device to use
     "wrapper_args": {  # define all arguments for the wrapper

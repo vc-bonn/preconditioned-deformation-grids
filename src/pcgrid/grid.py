@@ -1,8 +1,8 @@
 import torch
 from largesteps.parameterize import to_differential
-from src.pcgrid.grid.solver import from_differential
 from typing import Tuple
-from src.pcgrid.utils import validate_dict
+from pcgrid.utils import validate_dict
+from pcgrid.solver import from_differential
 
 required_keys = {
     "smoothness",

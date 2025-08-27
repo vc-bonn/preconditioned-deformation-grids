@@ -2,11 +2,12 @@ import torch
 from argparse import Namespace
 import itertools
 from functools import reduce
+import os
 
-from src.pcgrid.utils import list_class_names, validate_dict
-from src.pcgrid.optimization_values import *
+from pcgrid.utils import list_class_names, validate_dict
+from pcgrid.optimization_values import *
 
-from src.pcgrid.grid.grid import MultiresolutionGrid
+from pcgrid.grid import MultiresolutionGrid
 
 required_keys = {"grids"}
 
@@ -48,7 +49,11 @@ class ValueWrapper(torch.nn.Module):
         assert len(wrapped_parameters) == len(
             set(wrapped_parameters)
         ), "Parameterization definition duplication"
-        for parameter in list_class_names("src/pgrid/optimization_values.py"):
+        for parameter in list_class_names(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "optimization_values.py"
+            )
+        ):
             if (
                 parameter not in wrapped_parameters
                 and parameter in self.wrapper_args["defaults"]
