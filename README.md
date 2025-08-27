@@ -81,4 +81,4 @@ Currently implemented parameterizations:
 - `Scales`: For 3D scale tasks, outputs 3D values per point. Shape of output is `(batch_size, num_points, 3)`.
 
 #### Output
-The output of the `ValueWrapper` is a dictionary containing the computed values for each parameterization. The keys are the names of the parameterizations, and the values are tensors with the computed values.
+The output of the `ValueWrapper` is a dictionary containing the computed values for each parameter. The keys are the names of the parameterization classes, and the values are tensors with the output values.
