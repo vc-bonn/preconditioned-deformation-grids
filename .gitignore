@@ -1,0 +1,4 @@
+*.pyc
+.vscode
+build
+src/pcgrid.egg-info
