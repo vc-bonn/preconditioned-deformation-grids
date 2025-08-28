@@ -13,8 +13,8 @@ It supports smoothing in space and time. In space, neighboring grid cells are co
 
 ### Installation
 ```bash
-git clone https://github.com/JuKalt/preconditioned_grids.git
-pip install preconditioned_grids/
+git clone https://github.com/vc-bonn/pcgrid.git
+pip install pcgrid/
 ```
 
 ### Usage See examples in example.py:
