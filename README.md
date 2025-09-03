@@ -2,7 +2,7 @@
 # Preconditioned Deformation Grids
 ![](assets/teaser.jpg)
 
-## Linux Install
+## Install
 ```
 git submodule update --init
 
