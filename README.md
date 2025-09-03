@@ -33,18 +33,18 @@ python Main.py --...
 To download the preprocessed data, see the data section of [Dynosurf](https://github.com/yaoyx689/DynoSurf?tab=readme-ov-file).
 ``` 
 --AMA
-
-----crane_0010
-
-------gt
-------pcl_seqs
-------points_clouds
-
-----crane_0027
-
-------gt
-------pcl_seqs
-------points_clouds
+|
+|--crane_0010
+|-|
+|-|--gt
+|-|--pcl_seqs
+|-|--points_clouds
+|
+|--crane_0027
+|-|
+|-|--gt
+|-|--pcl_seqs
+|-|--points_clouds
 ```
 
 ## RUNS
