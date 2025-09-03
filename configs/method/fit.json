@@ -1,0 +1,28 @@
+{
+    "descriptor": "surface",
+    "geometry": {
+        "smoothness": 16,
+        "lr": 0.0001,
+        "solver": "Cholesky"
+    },
+    "transform": {
+        "smoothness": 0.25,
+        "lr": 0.005,
+        "solver": "Cholesky"
+    },
+    "optimization": {
+        "epochs": 5000,
+        "edgeloss": 250
+    },
+    "grid": {
+        "base_res": 1,
+        "increase_per_level": 2,
+        "n_level": 10,
+        "lr_adapt": 1.1,
+        "local_lambda_adapt": 1.5,
+        "neighbours": 3,
+        "smoothness": 0.25,
+        "lr": 0.005,
+        "solver": "CG"
+    }
+}

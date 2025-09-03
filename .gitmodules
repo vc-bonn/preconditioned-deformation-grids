@@ -1,0 +1,9 @@
+[submodule "ext/dynosurf"]
+	path = ext/dynosurf
+	url = https://github.com/yaoyx689/DynoSurf.git
+[submodule "ext/m2v"]
+	path = ext/m2v
+	url = https://github.com/VVeiCao/Motion2VecSets.git
+[submodule "ext/pcgrid"]
+	path = ext/pcgrid
+	url = https://github.com/vc-bonn/pcgrid.git

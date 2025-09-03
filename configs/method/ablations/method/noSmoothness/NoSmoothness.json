@@ -1,0 +1,99 @@
+{
+    "descriptor": "surface",
+    "initialization": {
+        "method": "visual_hull",
+        "smooth": 1,
+        "partial_masks": 0,
+        "hull_resolution": 512,
+        "small_hull_resolution": 128
+    },
+    "geometry": {
+        "smoothness": 12,
+        "lr": 0.0002,
+        "solver": "Cholesky"
+    },
+    "transform": {
+        "smoothness2": [
+            2,
+            0
+        ],
+        "smoothness": [
+            4,
+            0
+        ],
+        "lr": 0.0005,
+        "mesh_sm": [
+            0,
+            2,
+            4,
+            4,
+            8,
+            16,
+            32,
+            64
+        ]
+    },
+    "transform_mesh": {
+        "smoothness": [
+            4,
+            1
+        ],
+        "lr": 0.0005,
+        "solver": "Cholesky",
+        "mesh_sm": [
+            16
+        ]
+    },
+    "optimization": {
+        "epochs": 5000,
+        "con": 50,
+        "edgeloss":250
+    },
+    "grid": {
+        "base_res": 1,
+        "increase_per_level": 2,
+        "n_level": 10,
+        "lr_adapt": 1.1,
+        "local_lambda_adapt": 1.5,
+        "neighbours": 3,
+        "lr": 2e-05
+    },
+    "TemplateOptimize": {
+        "chamfer_weight": 500,
+        "sdf_weight": 50,
+        "normal_weight": 0.001,
+        "lr": 0.0001,
+        "tet_grid_volume": 4.5e-07,
+        "tet_delete_thres": 0.01,
+        "template_idx": -1,
+        "mesh_n_faces": 20000,
+        "transforms_n_faces": [
+            20000
+        ]
+    },
+    "JointOptimize": {
+        "deform_smooth_weight": 1000.0,
+        "template_weight": 1,
+        "normal_weight": 0.001,
+        "chamfer_weight": 500,
+        "sdf_sign_weight": 100,
+        "lr": 0.0001,
+        "sdf_sigmoid_scale": 100,
+        "sdf_fusion_thres": 0.1,
+        "robust_chamfer_param": 0.3
+    },
+    "Training": {
+        "print_obj_every": 10000,
+        "save_step": 5000,
+        "init_iter": 5000,
+        "joint_iter": 10000,
+        "batch_size": 100,
+        "deform_type": "controlpts",
+        "sampling_num_pts": 10000
+    },
+    "decoder": {
+        "internal_dims": 128,
+        "hidden": 5,
+        "multires": 5
+    }
+}
