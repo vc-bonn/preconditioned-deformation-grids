@@ -5,6 +5,8 @@
 ## Install
 ```
 git clone https://github.com/vc-bonn/preconditioned-deformation-grids.git pdg
+cd pdg
+
 git submodule update --init
 
 conda create -n T python=3.12
