@@ -58,6 +58,8 @@ All run configs are predefined in configs/method/runs. For the ablation study se
 [DFAUST] python configs/method/runs/run_dfaust.py
 ```
 
-To run the sequence length ablation studies, use the scripts in src/io/dataset/process_[___]_dataset.py to prepare the input data. These scripts have been tested and demonstrated on the AMA dataset. Please note that the code has been refactored, so results may differ slightly from those reported in the paper. The noise ablation study is currently not re-enabled.
+To run the sequence length ablation studies, use the scripts in src/io/dataset/process_[___]_dataset.py to prepare the input data. These scripts have been tested and demonstrated on the AMA dataset. 
+Please note that the code has been refactored, so results may differ slightly from those reported in the paper. 
+The noise ablation study is currently not re-enabled.
 To run the initialization methods from DynoSurf or Motion2VecSets, make sure to install their required packages. For Motion2VecSets, we recommend creating a separate conda environment with the appropriate Python version to avoid version conflicts.
 
