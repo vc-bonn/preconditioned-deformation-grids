@@ -86,9 +86,9 @@ class ValueWrapper(torch.nn.Module):
         assert (
             data["points"].min() >= -1 and data["points"].max() <= 1
         ), "Points must be in the range [-1, 1]."
-        assert (
-            data["grid_index"].shape[0] == data["points"].shape[0]
-        ), "Grid index and points must have the same batch size."
+        # assert (
+        #     data["grid_index"].shape[0] == data["points"].shape[0]
+        # ), "Grid index and points must have the same batch size."
         return reduce(lambda a, b: a | b, [wrapper(data) for wrapper in self.wrappers])
 
 
@@ -201,7 +201,9 @@ class DefaultWrapper(SupportWrapper):
         self.parameterization = self.get_parameterization(parameterization)
 
     def forward(self, data: dict) -> dict:
-        values = torch.ones_like(data["points"].squeeze(dim=(1, 2))[..., 0])
+        values = torch.ones(
+            data["grid_index"].shape[0], data["points"].shape[-2], device=self.device
+        )
         return {type(self.parameterization).__name__: self.parameterization(values)}
 
     def zero_grad(self):

@@ -33,18 +33,21 @@ class MultiresolutionGrid(torch.nn.Module):
         for arg in args:
             if verbose:
                 print("Grid {}".format(arg))
-            self.grids.append(Grid_level(grid_args=arg))
+
+            if self.grid_args["T_lambda_dampening"] > 0:
+                self.grids.append(Grid_level(grid_args=arg))
+            else:
+                self.grids.append(Split_Grid_Level(grid_args=arg))
         self.zero_grad()
 
     def zero_grad(self):
         for grid in self.grids:
-            grid.optimizer.zero_grad()
             grid.zero_grad()
 
     def step(self):
         """Steps the optimization of the grids."""
         for grid in self.grids:
-            grid.optimizer.step()
+            grid.step()
 
     def parameters_per_level(self) -> Tuple[list, list, list]:
         smoothness = [
@@ -75,6 +78,34 @@ class MultiresolutionGrid(torch.nn.Module):
             return output.mean(dim=0)
         else:
             return 0
+
+
+class Split_Grid_Level(torch.nn.Module):
+    def __init__(self, grid_args: dict):
+        super().__init__()
+        T = grid_args["T"]
+        grid_args["T"] = 1
+        self.grids = [Grid_level(grid_args=grid_args) for _ in range(T)]
+        pass
+
+    def forward(self, data: dict) -> torch.Tensor:
+        values = []
+        for grid_idx in data["grid_index"]:
+            # if grid_idx == 0:
+            #     d = {"points": data["points"].detach(), "grid_index": 0}
+            # else:
+            d = {"points": data["points"], "grid_index": 0}
+
+            values.append(self.grids[grid_idx](d))
+        return torch.cat(values, dim=0)
+
+    def zero_grad(self):
+        for grid in self.grids:
+            grid.zero_grad()
+
+    def step(self):
+        for grid in self.grids:
+            grid.optimizer.step()
 
 
 class Grid_level(torch.nn.Module):
@@ -124,23 +155,33 @@ class Grid_level(torch.nn.Module):
         """
         define the neighbourhood and compute the Laplacian matrix and create the M matrix
         """
-        adjacencies_space = self.define_neighbourhood_space()
-        adjacencies_time = self.define_neighbourhood_time()
 
-        V = (
-            (torch.cat((adjacencies_space, adjacencies_time), dim=-1) + 1)
-            .max()
-            .to(torch.int32)
-        )
+        L_time, L_space = None, None
+        if self.grid_size > 1:
+            adjacencies_space = self.define_neighbourhood_space()
+            L_space = self.laplacian_uniform_points(adjacencies_space)
+        if self.T > 1:
+            adjacencies_time = self.define_neighbourhood_time()
+            L_time = self.laplacian_uniform_points(adjacencies_time)
+
+        if L_space is not None and L_time is not None:
+            V = (
+                (torch.cat((adjacencies_space, adjacencies_time), dim=-1) + 1)
+                .max()
+                .to(torch.int32)
+            )
+        elif L_space is not None:
+            V = (adjacencies_space + 1).max().to(torch.int32)
+        elif L_time is not None:
+            V = (adjacencies_time + 1).max().to(torch.int32)
+        else:
+            raise ValueError("Grid size and T cannot both be 1.")
         idx = torch.arange(V, dtype=torch.int32, device=self.device)
         eye = torch.sparse_coo_tensor(
             torch.stack((idx, idx), dim=0),
             torch.ones(V, dtype=torch.float, device=self.device),
             (V, V),
         )
-
-        L_space = self.laplacian_uniform_points(adjacencies_space)
-        L_time = self.laplacian_uniform_points(adjacencies_time)
 
         if L_space is not None:
             self.M = eye + L_space * self.smoothness
@@ -151,6 +192,7 @@ class Grid_level(torch.nn.Module):
 
         if L_time is not None and L_space is not None:
             self.M += L_time * self.smoothness
+        self.M = self.M.coalesce()
 
     def laplacian_uniform_points(self, adjacencies: torch.Tensor) -> torch.Tensor:
         """
@@ -295,6 +337,8 @@ class Grid_level(torch.nn.Module):
         grid = opt_values.reshape(
             self.T, self.grid_size, self.grid_size, self.grid_size, self.cell_values
         )[data["grid_index"]]
+        if grid.ndim == 4:
+            grid = grid[None, ...]
 
         values = torch.nn.functional.grid_sample(
             grid.permute(0, 4, 1, 2, 3),
@@ -302,10 +346,22 @@ class Grid_level(torch.nn.Module):
             padding_mode="border",
             align_corners=True,
         ).squeeze(dim=(-3, -2))
+
+        # Debug
+        # pos = (((data["points"] + 1) / 2) * self.grid_size).long()
+        # pos = pos[0].flatten(end_dim=-2).unique(dim=0)
+        # print("Unique positions:", pos.shape)
+        # print(
+        #     "Grid Coverage: {:.2f}%".format(
+        #         (pos.shape[0] * 100)
+        #         / (self.grid_size * self.grid_size * self.grid_size)
+        #     )
+        # )
         return values.permute(0, 2, 1)  # T, P, C
 
     def zero_grad(self):
         self.opt_values.grad = None
+        self.optimizer.zero_grad()
 
     def step(self):
         self.optimizer.step()
