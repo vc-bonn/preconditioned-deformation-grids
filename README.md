@@ -1,5 +1,27 @@
+<h1 align="center" id="heading">Preconditioned Deformation Grids</h1>
 
-# Preconditioned Deformation Grids
+<p align="center">
+    <p align="center">
+		<b><a href="https://cg.cs.uni-bonn.de/person/m-sc-julian-kaltheuner">Julian Kaltheuner</a></b>
+        &nbsp;·&nbsp;
+		<b><a href="https://cg.cs.uni-bonn.de/person/dr-patrick-stotko">Patrick Stotko</a></b>
+        &nbsp;·&nbsp;
+		<b><a href="https://cg.cs.uni-bonn.de/person/dipl-inform-alexander-oebel">Alexander Oebel</a></b>
+        &nbsp;·&nbsp;
+		<b><a href="https://cg.cs.uni-bonn.de/person/dr-hannah-droege">Hannah Droege</a></b>
+        &nbsp;·&nbsp;
+        <b><a href="https://cg.cs.uni-bonn.de/person/prof-dr-reinhard-klein">Reinhard Klein</a></b>
+    </p>
+    <p align="center">
+       University of Bonn &nbsp
+    </p>
+    <h3 align="center">Pacific Graphics 2025</h3>
+    <h3 align="center">
+        <a href="https://arxiv.org/abs/2509.18097">Paper (arxiv)</a>
+		</h3>
+    <div align="center"></div>
+</p>
+
 ![](assets/teaser.jpg)
 
 ## Install
