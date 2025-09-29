@@ -35,8 +35,8 @@ conda create -n T python=3.12
 conda activate T
 
 
-pip install ext/pcgrid
 pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu126
+pip install ext/pcgrid
 pip install tqdm tensorboard scikit-learn charonload cmake gpytoolbox imageio matplotlib ninja open3d opencv-python pykdtree trimesh pymeshlab openmesh tensorboardx
 pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 ```
