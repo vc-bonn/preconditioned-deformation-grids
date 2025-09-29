@@ -193,7 +193,7 @@ class Opt_Run:
                         "grid_args": self.method_args["grid"]
                         | {
                             "T": self.args.T,
-                            "T_lambda_dampening": 0,
+                            "T_lambda_dampening": -1,
                         },  # Grid hyperparameters
                     }
                 },

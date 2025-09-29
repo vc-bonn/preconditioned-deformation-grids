@@ -1,6 +1,6 @@
 import torch
 import tqdm
-from src.utilities.loss import Loss_f
+from src.utilities.loss_f import Loss_f
 from torch.utils.data import DataLoader
 
 from src.geometry.grid import Grid

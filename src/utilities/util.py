@@ -67,7 +67,7 @@ def revert_scale(input, meshes, points_min, points_max, out_path):
             f,
         )
 
-    from ext.dynoSurf.evaluation.utils import eval_pointcloud
+    from ext.dynosurf.evaluation.utils import eval_pointcloud
 
     cd_list = []
     nc_list = []

@@ -51,6 +51,7 @@ if __name__ == "__main__":
         "base_out_path": args.out_path,
         "skip": args.skip,
         "directory_path": args.directory_path,
+        "noise": 0,
     }
 
     if os.path.isfile(args.methodConfig):

@@ -1,0 +1,16 @@
+[project]
+name = "pcgrid"
+version = "0.1.0"
+requires-python = ">=3.8"
+readme = "README.md"
+description = ""
+authors = [{ name = "Julian Kaltheuner", email = "kaltheun@cs.uni-bonn.de" }]
+dependencies = [
+    "torch",
+    "largesteps @ git+https://github.com/JuKalt/large-steps-pytorch-multiGPU.git",
+    "cholespy @ git+https://github.com/JuKalt/cholespy_multiGPU.git",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+

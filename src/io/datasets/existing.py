@@ -1,10 +1,9 @@
 import torch
 import openmesh as om
-from pytorch3d.io import load_objs_as_meshes
 import os
 
-from pytorch3d.io import load_objs_as_meshes, save_ply
-from pytorch3d.ops import sample_points_from_meshes
+from pytorch3d.io import load_objs_as_meshes, save_ply, load_ply
+from pytorch3d.ops import sample_points_from_meshes, estimate_pointcloud_normals
 import numpy as np
 from torch.utils.data.dataset import Dataset
 
@@ -12,7 +11,7 @@ from torch.utils.data.dataset import Dataset
 class existingDataset(Dataset):
     def __init__(self, args: dict):
         self.args = args
-        if args.target == "pcl":
+        if args.target == "ply":
             pcl_files = [
                 int(f.split("/")[-1].split(".")[0])
                 for f in self._get_files(
@@ -23,48 +22,47 @@ class existingDataset(Dataset):
             pcl_files.sort()
             pcl_files = [str(format(file, "04")) + ".ply" for file in pcl_files]
             meshes = [
-                om.read_trimesh(
+                load_ply(
                     os.path.join(
                         os.path.join(self.io_args["input_directory"], "point_clouds"),
-                        file,
-                    ),
-                    vertex_normal=True,
-                )
-                for file in pcl_files
-            ]
-
-            self.normals = torch.cat(
-                [
-                    torch.from_numpy(mesh.vertex_normals()).float()[None, ...]
-                    for mesh in meshes
-                ]
-            )
-        elif args.target == "npy":
-            pcl_files = [
-                int(f.split("/")[-1].split(".")[0])
-                for f in self._get_files(
-                    os.path.join(self.io_args["input_directory"], "pcl_seqs"),
-                    ".npy",
-                )
-            ]
-            pcl_files.sort()
-            pcl_files = [str(format(file, "04")) + ".npy" for file in pcl_files]
-            meshes = [
-                np.load(
-                    os.path.join(
-                        os.path.join(self.io_args["input_directory"], "pcl_seqs"),
                         file,
                     )
                 )
                 for file in pcl_files
             ]
 
-            self.normals = torch.cat(
-                [torch.from_numpy(mesh).float()[None, ...] for mesh in meshes]
+            self.points = torch.stack([mesh[0].to(torch.float32) for mesh in meshes])
+            self.normals = estimate_pointcloud_normals(
+                self.points, neighborhood_size=16
             )
-        self.points = torch.cat(
-            [torch.from_numpy(mesh).float()[None, ...] for mesh in meshes]
-        )
+            pass
+        elif args.target == "obj":
+            obj_files = [
+                int(f.split("/")[-1].split(".")[0])
+                for f in self._get_files(
+                    os.path.join(self.io_args["input_directory"], "gt"),
+                    ".obj",
+                )
+            ]
+            obj_files.sort()
+            obj_files = [str(format(file, "04")) + ".obj" for file in obj_files]
+            meshes = load_objs_as_meshes(
+                [
+                    os.path.join(
+                        os.path.join(self.io_args["input_directory"], "gt"),
+                        file,
+                    )
+                    for file in obj_files
+                ]
+            )
+
+            self.points, self.normals = sample_points_from_meshes(
+                meshes, self.args.number_points, return_normals=True
+            )
+        else:
+            raise NotImplementedError(
+                "Target type {} not implemented".format(args.target)
+            )
         obj_files = self._get_files(
             self.io_args["input_directory"],
             ".obj",
@@ -80,10 +78,6 @@ class existingDataset(Dataset):
         self.gt_normals = meshes.verts_normals_padded()
         self.gt_faces = meshes.faces_padded()
 
-        if args.target == "obj":
-            self.points, self.normals = sample_points_from_meshes(
-                meshes, self.args.number_points, return_normals=True
-            )
         os.makedirs(
             os.path.join(self.io_args["out_path"], "input_meshes"), exist_ok=True
         )

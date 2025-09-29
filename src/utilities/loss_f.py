@@ -1,7 +1,8 @@
 from src.utilities.util import temp_sys_path
+import sys
 
-with temp_sys_path("ext/dynoSurf/code"):
-    from loss import Loss
+sys.path.append("ext/dynosurf/code")
+from loss import Loss
 from pytorch3d.ops import sample_points_from_meshes
 from pytorch3d.loss import chamfer_distance
 import torch
