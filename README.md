@@ -40,6 +40,7 @@ pip install ext/pcgrid
 pip install tqdm tensorboard scikit-learn charonload cmake gpytoolbox imageio matplotlib ninja open3d opencv-python pykdtree trimesh pymeshlab openmesh tensorboardx
 pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 ```
+DynoSurf includes an import for the Kaolin package, even though it isn’t used. To resolve this, either install [**Kaolin**](https://kaolin.readthedocs.io/en/latest/notes/installation.html) or remove the import statement.
 
 ## Main.py Arguments
 ```
