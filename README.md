@@ -4,11 +4,11 @@
     <p align="center">
 		<b><a href="https://cg.cs.uni-bonn.de/person/m-sc-julian-kaltheuner">Julian Kaltheuner</a></b>
         &nbsp;·&nbsp;
-		<b><a href="https://cg.cs.uni-bonn.de/person/dr-patrick-stotko">Patrick Stotko</a></b>
-        &nbsp;·&nbsp;
 		<b><a href="https://cg.cs.uni-bonn.de/person/dipl-inform-alexander-oebel">Alexander Oebel</a></b>
         &nbsp;·&nbsp;
 		<b><a href="https://cg.cs.uni-bonn.de/person/dr-hannah-droege">Hannah Droege</a></b>
+        &nbsp;·&nbsp;
+		<b><a href="https://cg.cs.uni-bonn.de/person/dr-patrick-stotko">Patrick Stotko</a></b>
         &nbsp;·&nbsp;
         <b><a href="https://cg.cs.uni-bonn.de/person/prof-dr-reinhard-klein">Reinhard Klein</a></b>
     </p>
