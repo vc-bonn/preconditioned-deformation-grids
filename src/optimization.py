@@ -3,7 +3,7 @@ import tqdm
 from src.utilities.loss_f import Loss_f
 from torch.utils.data import DataLoader
 
-from src.geometry.grid import Grid
+from pcgrid.value_wrapper import ValueWrapper
 from src.utilities.util import edgelength
 
 from pytorch3d.structures import Meshes
@@ -100,7 +100,7 @@ class Optimization(torch.nn.Module):
         points_[..., :3] = points_[..., :3] + transforms["Translation"] * 0.1
         return points_
 
-    def forward_input(self, data: dict, grid: Grid):
+    def forward_input(self, data: dict, grid: ValueWrapper):
         if data["grid_index"].ndim == 2:
             data["grid_index"] = data["grid_index"].squeeze(dim=-1)
         input = {"points": data["points"][..., :3], "grid_index": data["grid_index"]}
@@ -111,7 +111,7 @@ class Optimization(torch.nn.Module):
         )
 
     def forward_prediction(
-        self, grid: Grid, v: torch.Tensor, f: torch.Tensor, data: dict, e
+        self, grid: ValueWrapper, v: torch.Tensor, f: torch.Tensor, data: dict, e
     ):
         edgeloss = 0
         edge_length = edgelength(v, f).detach()
@@ -183,7 +183,9 @@ class Optimization(torch.nn.Module):
 
         return cd_prediction / batch, edgeloss / batch, output_points
 
-    def forward(self, grid: Grid, opt_tran: Geometry, data: dict) -> Grid:
+    def forward(
+        self, grid: ValueWrapper, opt_tran: Geometry, data: dict
+    ) -> ValueWrapper:
         dataset = optimization_dataset.OptimizationDataset(self.args, data)
         dataloader = DataLoader(dataset=dataset, batch_size=1000, shuffle=False)
 
