@@ -4,11 +4,11 @@
     <p align="center">
 		<b><a href="https://cg.cs.uni-bonn.de/person/m-sc-julian-kaltheuner">Julian Kaltheuner</a></b>
         &nbsp;·&nbsp;
-		<b><a href="https://cg.cs.uni-bonn.de/person/dr-patrick-stotko">Patrick Stotko</a></b>
-        &nbsp;·&nbsp;
 		<b><a href="https://cg.cs.uni-bonn.de/person/dipl-inform-alexander-oebel">Alexander Oebel</a></b>
         &nbsp;·&nbsp;
 		<b><a href="https://cg.cs.uni-bonn.de/person/dr-hannah-droege">Hannah Droege</a></b>
+        &nbsp;·&nbsp;
+		<b><a href="https://cg.cs.uni-bonn.de/person/dr-patrick-stotko">Patrick Stotko</a></b>
         &nbsp;·&nbsp;
         <b><a href="https://cg.cs.uni-bonn.de/person/prof-dr-reinhard-klein">Reinhard Klein</a></b>
     </p>
@@ -40,6 +40,7 @@ pip install ext/pcgrid
 pip install tqdm tensorboard scikit-learn charonload cmake gpytoolbox imageio matplotlib ninja open3d opencv-python pykdtree trimesh pymeshlab openmesh tensorboardx
 pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 ```
+DynoSurf includes an import for the Kaolin package, even though it isn’t used. To resolve this, either install [**Kaolin**](https://kaolin.readthedocs.io/en/latest/notes/installation.html) or remove the import statement.
 
 ## Main.py Arguments
 ```
