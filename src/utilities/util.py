@@ -90,10 +90,6 @@ def revert_scale(input, meshes, points_min, points_max, out_path):
         f1_list.append(result_dict["f-score"])
         f05_list.append(result_dict["f-score-5"])
 
-    print("cd", np.array(cd_list).mean())
-    print("nc", np.array(nc_list).mean())
-    print("f05", np.array(f05_list).mean())
-    print("f1", np.array(f1_list).mean())
     return {
         "chamfer_distance": np.array(cd_list).mean(),
         "normals": np.array(nc_list).mean(),

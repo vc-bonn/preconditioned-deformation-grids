@@ -231,14 +231,3 @@ class Opt_Run:
                 self.args.method_args,
                 json_file,
             )
-        with open(
-            os.path.join(
-                self.io_args["out_path"],
-                "Eval.json",
-            ),
-            "w",
-        ) as json_file:
-            json.dump(
-                data,
-                json_file,
-            )
