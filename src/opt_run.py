@@ -40,12 +40,10 @@ class Opt_Run:
         bar = tqdm.tqdm(directories)
         for i, directory in enumerate(bar):
             if "skip" in self.io_args.keys():
-                if i < self.io_args["skip"]:
+                if i < self.io_args["skip"] or not os.path.isdir(
+                    self.io_args["directory_path"] + directory + "/"
+                ):
                     continue
-            # This directory bricks the botsch remesher, so we skip it for the ablation study.
-            # For the full directory run we manually lowered the iterations of the remesher and included it.
-            if directory == "test_dragonQKS_act33_start0_2763":
-                continue
             print("\n#####\n", directory, "\n#####\n")
             self.io_args["input_directory"] = (
                 self.io_args["directory_path"] + directory + "/"
@@ -82,7 +80,7 @@ class Opt_Run:
 
                 self(data)
 
-    def compute_keyframe(self, points, res=128):
+    def compute_keyframe(self, points, res=512):
         if self.args.keyframe == "ours":
             positions = (points[..., :3].squeeze() + 1) / 2
             positions = (positions * res).int()
@@ -153,7 +151,7 @@ class Opt_Run:
         # Keyframe Selection
         #####
         self.method_args["keyframe_index"] = self.compute_keyframe(
-            target_points.squeeze()
+            target_points.squeeze(), res=self.args.init_grid_resolution
         )
 
         #####
